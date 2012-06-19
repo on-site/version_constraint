@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Tests for version_constraint.js</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="../src/version_constraint.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
+
+    <script>
+      $(function() {
+        $("#qunit-header").html($("title").html());
+
+        module("'= 1.2.3' style");
+
+        test("equals the exact version", function() {
+          equal("", "", "Message");
+        });
+
+        test("wrong major version", function() {
+          equal("", "", "Message");
+        });
+
+        test("wrong minor version", function() {
+          equal("", "", "Message");
+        });
+
+        test("wrong build version", function() {
+          equal("", "", "Message");
+        });
+
+        test("missing build version", function() {
+          equal("", "", "Message");
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <h1 id="qunit-header"></h1>
+    <h2 id="qunit-banner"></h2>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+  </body>
+</html>
