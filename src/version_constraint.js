@@ -64,11 +64,33 @@
             return $.compareVersion(constraint, version) < 0;
         }
 
+        if (comparison === "~>") {
+            var lower = ">= " + constraint;
+            var upper = $.parseVersion(constraint);
+
+            if (upper.length <= 1) {
+                return true;
+            }
+
+            upper.pop();
+            upper.push(upper.pop() + 1);
+            upper = "< " + upper.join(".");
+            return $.version([lower, upper], version);
+        }
+
         throw new Error("Unknown comparison '" + comparison + "'");
     }
 
     $.version = function(constraint, version) {
-        var result = /^(=|!=|<=|>=|<|>)?\s*(.*)$/.exec(constraint);
+        if ($.isArray(constraint)) {
+            var constraintResult = $.map(constraint, function(x) {
+                return $.version(x, version);
+            });
+
+            return $.inArray(false, constraintResult) < 0;
+        }
+
+        var result = /^(=|!=|<=|>=|<|>|~<|~>)?\s*(.*)$/.exec(constraint);
         return checkVersion(result[1], result[2], version);
     };
 })(jQuery);
