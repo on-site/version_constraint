@@ -42,6 +42,10 @@
             return $.compareVersion(constraint, version) === 0;
         }
 
+        if (comparison === "!=") {
+            return $.compareVersion(constraint, version) !== 0;
+        }
+
         if (comparison === "<=") {
             return $.compareVersion(constraint, version) >= 0;
         }
@@ -64,7 +68,7 @@
     }
 
     $.version = function(constraint, version) {
-        var result = /^(=|<=|>=|<|>)?\s*(.*)$/.exec(constraint);
+        var result = /^(=|!=|<=|>=|<|>)?\s*(.*)$/.exec(constraint);
         return checkVersion(result[1], result[2], version);
     };
 })(jQuery);
