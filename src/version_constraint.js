@@ -35,18 +35,20 @@
         return 0;
     };
 
-    function checkVersion(comparison, constraint, version) {
-        comparison = comparison || "=";
+    $.versionComparisons = {
+        "": function(constraint, version) {
+            return $.version("= " + constraint, version);
+        },
 
-        if (comparison === "=") {
+        "=": function(constraint, version) {
             return $.compareVersion(constraint, version) === 0;
-        }
+        },
 
-        if (comparison === "!=") {
+        "!=": function(constraint, version) {
             return $.compareVersion(constraint, version) !== 0;
-        }
+        },
 
-        if (comparison === "~=") {
+        "~=": function(constraint, version) {
             var lower = ">= " + constraint;
             var upper = $.parseVersion(constraint);
 
@@ -57,25 +59,25 @@
             upper.push(upper.pop() + 1);
             upper = "< " + upper.join(".");
             return $.version([lower, upper], version);
-        }
+        },
 
-        if (comparison === "<=") {
+        "<=": function(constraint, version) {
             return $.compareVersion(constraint, version) >= 0;
-        }
+        },
 
-        if (comparison === ">=") {
+        ">=": function(constraint, version) {
             return $.compareVersion(constraint, version) <= 0;
-        }
+        },
 
-        if (comparison === "<") {
+        "<": function(constraint, version) {
             return $.compareVersion(constraint, version) > 0;
-        }
+        },
 
-        if (comparison === ">") {
+        ">": function(constraint, version) {
             return $.compareVersion(constraint, version) < 0;
-        }
+        },
 
-        if (comparison === "~<") {
+        "~<": function(constraint, version) {
             var upper = "<= " + constraint;
             var lower = $.parseVersion(constraint);
 
@@ -90,9 +92,9 @@
             lower.pop();
             lower = ">= " + lower.join(".");
             return $.version([lower, upper], version);
-        }
+        },
 
-        if (comparison === "~>") {
+        "~>": function(constraint, version) {
             var lower = ">= " + constraint;
             var upper = $.parseVersion(constraint);
 
@@ -109,9 +111,7 @@
             upper = "< " + upper.join(".");
             return $.version([lower, upper], version);
         }
-
-        throw new Error("Unknown comparison '" + comparison + "'");
-    }
+    };
 
     $.version = function(constraint, version) {
         if ($.isArray(constraint)) {
@@ -124,7 +124,13 @@
             return true;
         }
 
-        var result = /^(=|!=|~=|<=|>=|<|>|~<|~>)?\s*(.*)$/.exec(constraint);
-        return checkVersion(result[1], result[2], version);
+        var result = /^(?:(\S+)?\s+)?(.*)$/.exec(constraint);
+        var comparison = result[1] || "";
+
+        if ($.versionComparisons[comparison]) {
+            return $.versionComparisons[comparison](result[2], version);
+        }
+
+        throw new Error("Unknown comparison '" + comparison + "'");
     };
 })(jQuery);

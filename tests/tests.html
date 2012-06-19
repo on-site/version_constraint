@@ -99,6 +99,8 @@
         module("'1.2.3' style");
 
         test("equals the exact version", function() {
+          assertVersion("1", "1", true);
+          assertVersion("1.2", "1.2", true);
           assertVersion("1.2.3", "1.2.3", true);
         });
 
