@@ -46,12 +46,24 @@
             return $.compareVersion(constraint, version) !== 0;
         }
 
+        if (comparison === "~=") {
+            var lower = ">= " + constraint;
+            var upper = $.parseVersion(constraint);
+
+            if (upper.length < 1) {
+                return true;
+            }
+
+            upper.push(upper.pop() + 1);
+            upper = "< " + upper.join(".");
+            return $.version([lower, upper], version);
+        }
+
         if (comparison === "<=") {
             return $.compareVersion(constraint, version) >= 0;
         }
 
         if (comparison === ">=") {
-            console.log(constraint, version);
             return $.compareVersion(constraint, version) <= 0;
         }
 
@@ -60,7 +72,6 @@
         }
 
         if (comparison === ">") {
-            console.log(constraint, version);
             return $.compareVersion(constraint, version) < 0;
         }
 
@@ -113,7 +124,7 @@
             return true;
         }
 
-        var result = /^(=|!=|<=|>=|<|>|~<|~>)?\s*(.*)$/.exec(constraint);
+        var result = /^(=|!=|~=|<=|>=|<|>|~<|~>)?\s*(.*)$/.exec(constraint);
         return checkVersion(result[1], result[2], version);
     };
 })(jQuery);
