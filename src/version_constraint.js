@@ -64,6 +64,23 @@
             return $.compareVersion(constraint, version) < 0;
         }
 
+        if (comparison === "~<") {
+            var upper = "<= " + constraint;
+            var lower = $.parseVersion(constraint);
+
+            if (lower.length < 1) {
+                return true;
+            }
+
+            if (lower.length == 1) {
+                return $.version("<= " + constraint, version);
+            }
+
+            lower.pop();
+            lower = ">= " + lower.join(".");
+            return $.version([lower, upper], version);
+        }
+
         if (comparison === "~>") {
             var lower = ">= " + constraint;
             var upper = $.parseVersion(constraint);
@@ -87,11 +104,13 @@
 
     $.version = function(constraint, version) {
         if ($.isArray(constraint)) {
-            var constraintResult = $.map(constraint, function(x) {
-                return $.version(x, version);
-            });
+            for (var i = 0; i < constraint.length; i++) {
+                if (!$.version(constraint[i], version)) {
+                    return false;
+                }
+            }
 
-            return $.inArray(false, constraintResult) < 0;
+            return true;
         }
 
         var result = /^(=|!=|<=|>=|<|>|~<|~>)?\s*(.*)$/.exec(constraint);

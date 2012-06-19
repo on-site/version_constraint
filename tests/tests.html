@@ -348,6 +348,58 @@
           assertVersion("> 1.2.3", "0.2.4", false);
         });
 
+        module("'~< 1.2.3' style");
+
+        test("single digit", function() {
+          assertVersion("~< 2", "0", true)
+          assertVersion("~< 2", "1", true)
+          assertVersion("~< 2", "1.2", true)
+          assertVersion("~< 2", "1.2.3", true)
+          assertVersion("~< 2", "2", true)
+          assertVersion("~< 2", "2.1", false)
+          assertVersion("~< 2", "2.2", false)
+          assertVersion("~< 2", "3", false)
+          assertVersion("~< 2", "4", false)
+        });
+
+        test("double digit within constraint", function() {
+          assertVersion("~< 2.3", "2.3", true);
+          assertVersion("~< 2.3", "2.2", true);
+          assertVersion("~< 2.3", "2", true);
+          assertVersion("~< 2.3", "2.0", true);
+          assertVersion("~< 2.3", "2.1", true);
+          assertVersion("~< 2.3", "2.1.3", true);
+        });
+
+        test("double digit outside constraint", function() {
+          assertVersion("~< 2.3", "2.3.1", false);
+          assertVersion("~< 2.3", "0", false);
+          assertVersion("~< 2.3", "1", false);
+          assertVersion("~< 2.3", "1.2", false);
+          assertVersion("~< 2.3", "1.9.9", false);
+        });
+
+        test("triple digit within constraint", function() {
+          assertVersion("~< 1.2.3", "1.2.3", true);
+          assertVersion("~< 1.2.3", "1.2.2", true);
+          assertVersion("~< 1.2.3", "1.2", true);
+          assertVersion("~< 1.2.3", "1.2.0", true);
+          assertVersion("~< 1.2.3", "1.2.1", true);
+          assertVersion("~< 1.2.3", "1.2.1.3", true);
+        });
+
+        test("triple digit outside constraint", function() {
+          assertVersion("~< 1.2.3", "1", false);
+          assertVersion("~< 1.2.3", "1.1", false);
+          assertVersion("~< 1.2.3", "0.9", false);
+          assertVersion("~< 1.2.3", "1.1.9", false);
+          assertVersion("~< 1.2.3", "1.1.9.9", false);
+          assertVersion("~< 1.2.3", "1.2.3.1", false);
+          assertVersion("~< 1.2.3", "1.2.4", false);
+          assertVersion("~< 1.2.3", "2", false);
+          assertVersion("~< 1.2.3", "2.0.0", false);
+        });
+
         module("'~> 1.2.3' style");
 
         test("single digit", function() {
