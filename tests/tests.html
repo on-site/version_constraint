@@ -522,6 +522,42 @@
           assertVersion([">= 1.2.3", "< 1.2.4"], "2", false);
           assertVersion([">= 1.2.3", "< 1.2.4"], "2.1", false);
         });
+
+        module("custom comparison");
+
+        test("that is missing", function() {
+          raises(function() { $.version("missing 1.2.3", "3.2.1"); }, Error, "Unknown comparison 'missing'");
+        });
+
+        test("that matches", function() {
+          var comparisonCalled = false;
+
+          $.versionComparisons["matches"] = function(constraint, version) {
+            comparisonCalled = true;
+            equal(constraint, "1.2.3", "The constraint passed into the custom comparison");
+            equal(version, "3.2.1", "The version passed into the custom comparison");
+            return true;
+          };
+
+          equal(comparisonCalled, false, "The custom comparison was not yet called");
+          assertVersion("matches 1.2.3", "3.2.1", true);
+          equal(comparisonCalled, true, "The custom comparison was called");
+        });
+
+        test("that doesn't match", function() {
+          var comparisonCalled = false;
+
+          $.versionComparisons["nomatches"] = function(constraint, version) {
+            comparisonCalled = true;
+            equal(constraint, "1.2.3", "The constraint passed into the custom comparison");
+            equal(version, "3.2.1", "The version passed into the custom comparison");
+            return false;
+          };
+
+          equal(comparisonCalled, false, "The custom comparison was not yet called");
+          assertVersion("nomatches 1.2.3", "3.2.1", false);
+          equal(comparisonCalled, true, "The custom comparison was called");
+        });
       });
     </script>
   </head>
