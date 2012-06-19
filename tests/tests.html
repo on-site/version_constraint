@@ -11,26 +11,107 @@
       $(function() {
         $("#qunit-header").html($("title").html());
 
-        module("'= 1.2.3' style");
+        function assertParseVersion(version, expected) {
+          deepEqual($.parseVersion(version), expected, "$.parseVersion('" + version + "')");
+        }
+
+        function assertCompareVersion(a, b, expected) {
+          equal($.compareVersion(a, b), expected, "$.compareVersion('" + a + "', '" + b + "')");
+        }
+
+        function assertVersion(a, b, expected) {
+          equal($.version(a, b), expected, "$.version('" + a + "', '" + b + "')");
+        }
+
+        module("parseVersion");
+
+        test("works for ''", function() {
+          assertParseVersion("", []);
+        });
+
+        test("works for '1'", function() {
+          assertParseVersion("1", [1]);
+        });
+
+        test("works for '1.2'", function() {
+          assertParseVersion("1.2", [1, 2]);
+        });
+
+        test("works for '1.2.3'", function() {
+          assertParseVersion("1.2.3", [1, 2, 3]);
+        });
+
+        module("compareVersion");
+
+        test("same version", function() {
+          assertCompareVersion("", "", 0)
+          assertCompareVersion("1", "1", 0)
+          assertCompareVersion("1.2", "1.2", 0)
+          assertCompareVersion("1.2.3", "1.2.3", 0)
+        });
+
+        test("smaller version", function() {
+          assertCompareVersion("", "1", -1);
+          assertCompareVersion("0", "1", -1);
+          assertCompareVersion("", "1.2", -1);
+          assertCompareVersion("1", "1.2", -1);
+          assertCompareVersion("1.1", "1.2", -1);
+          assertCompareVersion("0.2", "1.2", -1);
+          assertCompareVersion("0.3", "1.2", -1);
+          assertCompareVersion("", "1.2.3", -1);
+          assertCompareVersion("1", "1.2.3", -1);
+          assertCompareVersion("1.2", "1.2.3", -1);
+          assertCompareVersion("1.2.2", "1.2.3", -1);
+          assertCompareVersion("1.1.3", "1.2.3", -1);
+          assertCompareVersion("1.1.4", "1.2.3", -1);
+          assertCompareVersion("0.2.3", "1.2.3", -1);
+          assertCompareVersion("0.3.3", "1.2.3", -1);
+          assertCompareVersion("0.2.4", "1.2.3", -1);
+        });
+
+        test("bigger version", function() {
+          assertCompareVersion("1", "", 1);
+          assertCompareVersion("1", "0", 1);
+          assertCompareVersion("1.2", "", 1);
+          assertCompareVersion("1.2", "1", 1);
+          assertCompareVersion("1.2", "1.1", 1);
+          assertCompareVersion("1.2", "0.2", 1);
+          assertCompareVersion("1.2", "0.3", 1);
+          assertCompareVersion("1.2.3", "", 1);
+          assertCompareVersion("1.2.3", "1", 1);
+          assertCompareVersion("1.2.3", "1.2", 1);
+          assertCompareVersion("1.2.3", "1.2.2", 1);
+          assertCompareVersion("1.2.3", "1.1.3", 1);
+          assertCompareVersion("1.2.3", "1.1.4", 1);
+          assertCompareVersion("1.2.3", "0.2.3", 1);
+          assertCompareVersion("1.2.3", "0.3.3", 1);
+          assertCompareVersion("1.2.3", "0.2.4", 1);
+        });
+
+        module("'1.2.3' style");
 
         test("equals the exact version", function() {
-          equal("", "", "Message");
+          assertVersion("1.2.3", "1.2.3", true);
         });
 
         test("wrong major version", function() {
-          equal("", "", "Message");
+          assertVersion("1.2.3", "2.2.3", false);
+          assertVersion("1.2.3", "0.2.3", false);
         });
 
         test("wrong minor version", function() {
-          equal("", "", "Message");
+          assertVersion("1.2.3", "1.3.3", false);
+          assertVersion("1.2.3", "1.1.3", false);
         });
 
         test("wrong build version", function() {
-          equal("", "", "Message");
+          assertVersion("1.2.3", "1.2.4", false);
+          assertVersion("1.2.3", "1.2.2", false);
         });
 
         test("missing build version", function() {
-          equal("", "", "Message");
+          assertVersion("1.2.3", "1.2", false);
+          assertVersion("1.2.3", "1", false);
         });
       });
     </script>
