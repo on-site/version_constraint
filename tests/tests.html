@@ -351,13 +351,13 @@
         module("'~> 1.2.3' style");
 
         test("single digit", function() {
-          assertVersion("~> 2", "0", true)
-          assertVersion("~> 2", "1", true)
+          assertVersion("~> 2", "0", false)
+          assertVersion("~> 2", "1", false)
+          assertVersion("~> 2", "1.2", false)
+          assertVersion("~> 2", "1.2.3", false)
           assertVersion("~> 2", "2", true)
           assertVersion("~> 2", "3", true)
           assertVersion("~> 2", "4", true)
-          assertVersion("~> 2", "1.2", true)
-          assertVersion("~> 2", "1.2.3", true)
           assertVersion("~> 2", "3.2", true)
           assertVersion("~> 2", "3.2.3", true)
         });

@@ -68,8 +68,12 @@
             var lower = ">= " + constraint;
             var upper = $.parseVersion(constraint);
 
-            if (upper.length <= 1) {
+            if (upper.length < 1) {
                 return true;
+            }
+
+            if (upper.length == 1) {
+                return $.version(">= " + constraint, version);
             }
 
             upper.pop();
