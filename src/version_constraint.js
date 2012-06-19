@@ -35,7 +35,36 @@
         return 0;
     };
 
+    function checkVersion(comparison, constraint, version) {
+        comparison = comparison || "=";
+
+        if (comparison === "=") {
+            return $.compareVersion(constraint, version) === 0;
+        }
+
+        if (comparison === "<=") {
+            return $.compareVersion(constraint, version) >= 0;
+        }
+
+        if (comparison === ">=") {
+            console.log(constraint, version);
+            return $.compareVersion(constraint, version) <= 0;
+        }
+
+        if (comparison === "<") {
+            return $.compareVersion(constraint, version) > 0;
+        }
+
+        if (comparison === ">") {
+            console.log(constraint, version);
+            return $.compareVersion(constraint, version) < 0;
+        }
+
+        throw new Error("Unknown comparison '" + comparison + "'");
+    }
+
     $.version = function(constraint, version) {
-        return $.compareVersion(constraint, version) === 0;
+        var result = /^(=|<=|>=|<|>)?\s*(.*)$/.exec(constraint);
+        return checkVersion(result[1], result[2], version);
     };
 })(jQuery);

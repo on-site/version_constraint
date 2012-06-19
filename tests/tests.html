@@ -113,6 +113,204 @@
           assertVersion("1.2.3", "1.2", false);
           assertVersion("1.2.3", "1", false);
         });
+
+        module("'= 1.2.3' style");
+
+        test("equals the exact version", function() {
+          assertVersion("= 1.2.3", "1.2.3", true);
+        });
+
+        test("wrong major version", function() {
+          assertVersion("= 1.2.3", "2.2.3", false);
+          assertVersion("= 1.2.3", "0.2.3", false);
+        });
+
+        test("wrong minor version", function() {
+          assertVersion("= 1.2.3", "1.3.3", false);
+          assertVersion("= 1.2.3", "1.1.3", false);
+        });
+
+        test("wrong build version", function() {
+          assertVersion("= 1.2.3", "1.2.4", false);
+          assertVersion("= 1.2.3", "1.2.2", false);
+        });
+
+        test("missing build version", function() {
+          assertVersion("= 1.2.3", "1.2", false);
+          assertVersion("= 1.2.3", "1", false);
+        });
+
+        module("'<= 1.2.3' style");
+
+        test("same version", function() {
+          assertVersion("<= 1", "1", true)
+          assertVersion("<= 1.2", "1.2", true)
+          assertVersion("<= 1.2.3", "1.2.3", true)
+        });
+
+        test("smaller version", function() {
+          assertVersion("<= 0", "1", false);
+          assertVersion("<= 1", "1.2", false);
+          assertVersion("<= 1.1", "1.2", false);
+          assertVersion("<= 0.2", "1.2", false);
+          assertVersion("<= 0.3", "1.2", false);
+          assertVersion("<= 1", "1.2.3", false);
+          assertVersion("<= 1.2", "1.2.3", false);
+          assertVersion("<= 1.2.2", "1.2.3", false);
+          assertVersion("<= 1.1.3", "1.2.3", false);
+          assertVersion("<= 1.1.4", "1.2.3", false);
+          assertVersion("<= 0.2.3", "1.2.3", false);
+          assertVersion("<= 0.3.3", "1.2.3", false);
+          assertVersion("<= 0.2.4", "1.2.3", false);
+        });
+
+        test("bigger version", function() {
+          assertVersion("<= 1", "", true);
+          assertVersion("<= 1", "0", true);
+          assertVersion("<= 1.2", "", true);
+          assertVersion("<= 1.2", "1", true);
+          assertVersion("<= 1.2", "1.1", true);
+          assertVersion("<= 1.2", "0.2", true);
+          assertVersion("<= 1.2", "0.3", true);
+          assertVersion("<= 1.2.3", "", true);
+          assertVersion("<= 1.2.3", "1", true);
+          assertVersion("<= 1.2.3", "1.2", true);
+          assertVersion("<= 1.2.3", "1.2.2", true);
+          assertVersion("<= 1.2.3", "1.1.3", true);
+          assertVersion("<= 1.2.3", "1.1.4", true);
+          assertVersion("<= 1.2.3", "0.2.3", true);
+          assertVersion("<= 1.2.3", "0.3.3", true);
+          assertVersion("<= 1.2.3", "0.2.4", true);
+        });
+
+        module("'>= 1.2.3' style");
+
+        test("same version", function() {
+          assertVersion(">= 1", "1", true)
+          assertVersion(">= 1.2", "1.2", true)
+          assertVersion(">= 1.2.3", "1.2.3", true)
+        });
+
+        test("smaller version", function() {
+          assertVersion(">= 0", "1", true);
+          assertVersion(">= 1", "1.2", true);
+          assertVersion(">= 1.1", "1.2", true);
+          assertVersion(">= 0.2", "1.2", true);
+          assertVersion(">= 0.3", "1.2", true);
+          assertVersion(">= 1", "1.2.3", true);
+          assertVersion(">= 1.2", "1.2.3", true);
+          assertVersion(">= 1.2.2", "1.2.3", true);
+          assertVersion(">= 1.1.3", "1.2.3", true);
+          assertVersion(">= 1.1.4", "1.2.3", true);
+          assertVersion(">= 0.2.3", "1.2.3", true);
+          assertVersion(">= 0.3.3", "1.2.3", true);
+          assertVersion(">= 0.2.4", "1.2.3", true);
+        });
+
+        test("bigger version", function() {
+          assertVersion(">= 1", "", false);
+          assertVersion(">= 1", "0", false);
+          assertVersion(">= 1.2", "", false);
+          assertVersion(">= 1.2", "1", false);
+          assertVersion(">= 1.2", "1.1", false);
+          assertVersion(">= 1.2", "0.2", false);
+          assertVersion(">= 1.2", "0.3", false);
+          assertVersion(">= 1.2.3", "", false);
+          assertVersion(">= 1.2.3", "1", false);
+          assertVersion(">= 1.2.3", "1.2", false);
+          assertVersion(">= 1.2.3", "1.2.2", false);
+          assertVersion(">= 1.2.3", "1.1.3", false);
+          assertVersion(">= 1.2.3", "1.1.4", false);
+          assertVersion(">= 1.2.3", "0.2.3", false);
+          assertVersion(">= 1.2.3", "0.3.3", false);
+          assertVersion(">= 1.2.3", "0.2.4", false);
+        });
+
+        module("'< 1.2.3' style");
+
+        test("same version", function() {
+          assertVersion("< 1", "1", false)
+          assertVersion("< 1.2", "1.2", false)
+          assertVersion("< 1.2.3", "1.2.3", false)
+        });
+
+        test("smaller version", function() {
+          assertVersion("< 0", "1", false);
+          assertVersion("< 1", "1.2", false);
+          assertVersion("< 1.1", "1.2", false);
+          assertVersion("< 0.2", "1.2", false);
+          assertVersion("< 0.3", "1.2", false);
+          assertVersion("< 1", "1.2.3", false);
+          assertVersion("< 1.2", "1.2.3", false);
+          assertVersion("< 1.2.2", "1.2.3", false);
+          assertVersion("< 1.1.3", "1.2.3", false);
+          assertVersion("< 1.1.4", "1.2.3", false);
+          assertVersion("< 0.2.3", "1.2.3", false);
+          assertVersion("< 0.3.3", "1.2.3", false);
+          assertVersion("< 0.2.4", "1.2.3", false);
+        });
+
+        test("bigger version", function() {
+          assertVersion("< 1", "", true);
+          assertVersion("< 1", "0", true);
+          assertVersion("< 1.2", "", true);
+          assertVersion("< 1.2", "1", true);
+          assertVersion("< 1.2", "1.1", true);
+          assertVersion("< 1.2", "0.2", true);
+          assertVersion("< 1.2", "0.3", true);
+          assertVersion("< 1.2.3", "", true);
+          assertVersion("< 1.2.3", "1", true);
+          assertVersion("< 1.2.3", "1.2", true);
+          assertVersion("< 1.2.3", "1.2.2", true);
+          assertVersion("< 1.2.3", "1.1.3", true);
+          assertVersion("< 1.2.3", "1.1.4", true);
+          assertVersion("< 1.2.3", "0.2.3", true);
+          assertVersion("< 1.2.3", "0.3.3", true);
+          assertVersion("< 1.2.3", "0.2.4", true);
+        });
+
+        module("'> 1.2.3' style");
+
+        test("same version", function() {
+          assertVersion("> 1", "1", false)
+          assertVersion("> 1.2", "1.2", false)
+          assertVersion("> 1.2.3", "1.2.3", false)
+        });
+
+        test("smaller version", function() {
+          assertVersion("> 0", "1", true);
+          assertVersion("> 1", "1.2", true);
+          assertVersion("> 1.1", "1.2", true);
+          assertVersion("> 0.2", "1.2", true);
+          assertVersion("> 0.3", "1.2", true);
+          assertVersion("> 1", "1.2.3", true);
+          assertVersion("> 1.2", "1.2.3", true);
+          assertVersion("> 1.2.2", "1.2.3", true);
+          assertVersion("> 1.1.3", "1.2.3", true);
+          assertVersion("> 1.1.4", "1.2.3", true);
+          assertVersion("> 0.2.3", "1.2.3", true);
+          assertVersion("> 0.3.3", "1.2.3", true);
+          assertVersion("> 0.2.4", "1.2.3", true);
+        });
+
+        test("bigger version", function() {
+          assertVersion("> 1", "", false);
+          assertVersion("> 1", "0", false);
+          assertVersion("> 1.2", "", false);
+          assertVersion("> 1.2", "1", false);
+          assertVersion("> 1.2", "1.1", false);
+          assertVersion("> 1.2", "0.2", false);
+          assertVersion("> 1.2", "0.3", false);
+          assertVersion("> 1.2.3", "", false);
+          assertVersion("> 1.2.3", "1", false);
+          assertVersion("> 1.2.3", "1.2", false);
+          assertVersion("> 1.2.3", "1.2.2", false);
+          assertVersion("> 1.2.3", "1.1.3", false);
+          assertVersion("> 1.2.3", "1.1.4", false);
+          assertVersion("> 1.2.3", "0.2.3", false);
+          assertVersion("> 1.2.3", "0.3.3", false);
+          assertVersion("> 1.2.3", "0.2.4", false);
+        });
       });
     </script>
   </head>
