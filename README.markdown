@@ -24,7 +24,7 @@ want:
 If you have a version string from some library, you can use the same
 version assertions against it:
 
-    $.assertVersion("!= 1.2", "1.2");   // Doesn't throw an error
+    $.assertVersion("!= 1.2", "1.3");   // Doesn't throw an error
     $.assertVersion("<= 2.3", "2.3.1"); // Throws an error
 
 ## Checking versions without throwing an error
@@ -32,9 +32,9 @@ version assertions against it:
 If you just want to know if the version matches the constraint, you
 can use the version function, which returns true or false:
 
-    $.version("= 1.7.1"); // true if jQuery is 1.7.1
-    $.version("> 1.4");   // true if jQuery is greater than 1.4
-    $.version("!= 1.2", "1.2");   // true
+    $.version("= 1.7.1");         // true if jQuery is 1.7.1
+    $.version("> 1.4");           // true if jQuery is greater than 1.4
+    $.version("!= 1.2", "1.3");   // true
     $.version("<= 2.3", "2.3.1"); // false
 
 ## Comparing versions
