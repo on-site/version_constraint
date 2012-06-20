@@ -91,8 +91,8 @@ Below are the available constraints and an example usage of it:
 * **>=**: Greater than or equal to.  Example: ">= 1.1" will be true
   for "1.1", "1.2", but not "1.0" or "0.5.1".
 
-* **>~**: The same as rubygems' pessimistic version constraint.
-  Example: ">~ 3.1.2" is true for "3.1.2", "3.1.3", "3.1.5.3", but not
+* **~>**: The same as rubygems' pessimistic version constraint.
+  Example: "~> 3.1.2" is true for "3.1.2", "3.1.3", "3.1.5.3", but not
   "3.2", "3.1.1.9", or "4.0".  This is the same as [">= 3.1.2", "< 3.2"].
 
 # Array constraints:
