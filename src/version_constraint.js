@@ -171,4 +171,14 @@
 
         throw new Error("Unknown comparison '" + comparison + "'");
     };
+
+    $.assertVersion = function(constraint, version) {
+        if (!$.version(constraint, version)) {
+            if (version === undefined || version === null) {
+                version = $().jquery;
+            }
+
+            throw new Error("Version '" + version + "' does not match constraint '" + constraint + "'");
+        }
+    };
 })(jQuery);

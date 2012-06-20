@@ -31,6 +31,13 @@
           equal($.version(a, b), expected, "$.version(" + displayA + ", '" + b + "')");
         }
 
+        function assertRaises(block, message) {
+          raises(block, function(e) {
+            equal(e.message, message, "Exception message");
+            return true;
+          }, "Proper error was not thrown");
+        }
+
         module("parseVersion");
 
         test("works for ''", function() {
@@ -526,7 +533,7 @@
         module("custom comparison");
 
         test("that is missing", function() {
-          raises(function() { $.version("missing 1.2.3", "3.2.1"); }, Error, "Unknown comparison 'missing'");
+          assertRaises(function() { $.version("missing 1.2.3", "3.2.1"); }, "Unknown comparison 'missing'");
         });
 
         test("that matches", function() {
@@ -566,6 +573,23 @@
           equal($.version("= 1.2.3"), true, "$.version('= 1.2.3')");
           equal($.version(">= 1.2"), true, "$.version('>= 1.2')");
           equal($.version("!= 1.2.3"), false, "$.version('!= 1.2.3')");
+        });
+
+        module("assertVersion");
+
+        test("with explicit version", function() {
+          $.assertVersion("= 1.2.3", "1.2.3");
+          $.assertVersion(">= 1.2", "1.2.3");
+          assertRaises(function() { $.assertVersion("< 1.2", "1.2.3"); }, "Version '1.2.3' does not match constraint '< 1.2'");
+          assertRaises(function() { $.assertVersion("!= 1.2.3", "1.2.3"); }, "Version '1.2.3' does not match constraint '!= 1.2.3'");
+        });
+
+        test("without explicit version", function() {
+          jQuery.fn.jquery = "1.2.3";
+          $.assertVersion("= 1.2.3");
+          $.assertVersion(">= 1.2");
+          assertRaises(function() { $.assertVersion("< 1.2"); }, "Version '1.2.3' does not match constraint '< 1.2'");
+          assertRaises(function() { $.assertVersion("!= 1.2.3"); }, "Version '1.2.3' does not match constraint '!= 1.2.3'");
         });
       });
     </script>
