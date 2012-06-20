@@ -582,6 +582,7 @@
           $.assertVersion(">= 1.2", "1.2.3");
           assertRaises(function() { $.assertVersion("< 1.2", "1.2.3"); }, "Version '1.2.3' does not match constraint '< 1.2'");
           assertRaises(function() { $.assertVersion("!= 1.2.3", "1.2.3"); }, "Version '1.2.3' does not match constraint '!= 1.2.3'");
+          assertRaises(function() { $.assertVersion(["!= 1.2.3", "< 1.4"], "1.2.3"); }, "Version '1.2.3' does not match constraint ['!= 1.2.3', '< 1.4']");
         });
 
         test("without explicit version", function() {
@@ -590,6 +591,7 @@
           $.assertVersion(">= 1.2");
           assertRaises(function() { $.assertVersion("< 1.2"); }, "Version '1.2.3' does not match constraint '< 1.2'");
           assertRaises(function() { $.assertVersion("!= 1.2.3"); }, "Version '1.2.3' does not match constraint '!= 1.2.3'");
+          assertRaises(function() { $.assertVersion(["!= 1.2.3", "< 1.4"]); }, "Version '1.2.3' does not match constraint ['!= 1.2.3', '< 1.4']");
         });
       });
     </script>

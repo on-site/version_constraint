@@ -172,13 +172,24 @@
         throw new Error("Unknown comparison '" + comparison + "'");
     };
 
+    /**
+     * This will behave exactly like $.version, except instead of
+     * returning whether the version matches the constrain, an error
+     * is thrown if the version doesn't match the constraint.
+     */
     $.assertVersion = function(constraint, version) {
         if (!$.version(constraint, version)) {
             if (version === undefined || version === null) {
                 version = $().jquery;
             }
 
-            throw new Error("Version '" + version + "' does not match constraint '" + constraint + "'");
+            if ($.isArray(constraint)) {
+                constraint = "['" + constraint.join("', '") + "']";
+            } else {
+                constraint = "'" + constraint + "'";
+            }
+
+            throw new Error("Version '" + version + "' does not match constraint " + constraint + "");
         }
     };
 })(jQuery);
