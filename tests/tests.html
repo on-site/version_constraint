@@ -558,6 +558,15 @@
           assertVersion("nomatches 1.2.3", "3.2.1", false);
           equal(comparisonCalled, true, "The custom comparison was called");
         });
+
+        module("no version supplied");
+
+        test("jQuery version is used", function() {
+          jQuery.fn.jquery = "1.2.3";
+          equal($.version("= 1.2.3"), true, "$.version('= 1.2.3')");
+          equal($.version(">= 1.2"), true, "$.version('>= 1.2')");
+          equal($.version("!= 1.2.3"), false, "$.version('!= 1.2.3')");
+        });
       });
     </script>
   </head>
