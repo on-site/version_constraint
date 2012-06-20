@@ -1,4 +1,6 @@
 (function($) {
+    $.version_constraint = $.fn.version_constraint = "{{VERSION}}";
+
     /**
      * Parse the given version string.  This will break the version
      * string out to an array of ints.

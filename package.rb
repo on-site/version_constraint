@@ -27,6 +27,7 @@ header = "/*!
 "
 
 contents = File.read "src/version_constraint.js"
+contents["{{VERSION}}"] = version
 
 File.open "version_constraint.js", "w" do |f|
   f << header
